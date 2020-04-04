@@ -16,8 +16,10 @@ const MongoStore = mongo(session);
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
 import * as userController from "./controllers/user";
-import * as apiController from "./controllers/api";
+// import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
+import * as orderController from "./controllers/order";
+import * as produceController from "./controllers/produce";
 
 
 // API keys and Passport configuration
@@ -96,6 +98,15 @@ app.get("/signup", userController.getSignup);
 app.post("/signup", userController.postSignup);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
+app.get("/order", orderController.getOrders);
+app.post("/order", passportConfig.isAuthenticated, orderController.postOrder);
+app.route("/order/:orderId")
+ .get(passportConfig.isAuthenticated, orderController.getOrder)
+ .put(passportConfig.isAuthenticated, passportConfig.isAdmin, orderController.updateOrder);
+app.route("/produce/:produceId")
+ .get(produceController.getSingleProduce)
+ .put(passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.updateProduce)
+ .delete(passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.deleteProduce);
 app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
 app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
@@ -105,15 +116,15 @@ app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userControl
 /**
  * API examples routes.
  */
-app.get("/api", apiController.getApi);
-app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
+// app.get("/api", apiController.getApi);
+// app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
 
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "public_profile"] }));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
-    res.redirect(req.session.returnTo || "/");
-});
+// /**
+//  * OAuth authentication routes. (Sign in)
+//  */
+// app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email", "public_profile"] }));
+// app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/login" }), (req, res) => {
+//     res.redirect(req.session.returnTo || "/");
+// });
 
 export default app;
