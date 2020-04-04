@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .page-header
+    h3 Available Produce
+    hr
+  .row
+    each product in produce
+      .col-sm-4
+        .card.text-center
+        .card-body
+          h5.card-title= product.name
+          h6.card-subtitle $#{product.price}/#{product.priceUnit}
+          p.card-text= product.description
