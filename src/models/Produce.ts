@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 export type ProduceDocument = mongoose.Document & {
     name: string;
+    description: string;
     price: number;
-    unit: string;
+    priceUnit: string;
     units: [string];
     validFrom: Date;
     validTo: Date;
@@ -12,7 +13,8 @@ export type ProduceDocument = mongoose.Document & {
 export const produceSchema = new mongoose.Schema({
     name: String,
     price: Number,
-    unit: String,
+    description: String,
+    priceUnit: String,
     units: [String],
     validFrom: Date,
     validTo: Date
