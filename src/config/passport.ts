@@ -141,3 +141,9 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
         res.redirect(`/auth/${provider}`);
     }
 };
+
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserDocument;
+    if (user.isAdmin) next();
+    else next(createError(401, "Must be an Admin."));
+};
