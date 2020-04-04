@@ -103,10 +103,14 @@ app.post("/order", passportConfig.isAuthenticated, orderController.postOrder);
 app.route("/order/:orderId")
  .get(passportConfig.isAuthenticated, orderController.getOrder)
  .put(passportConfig.isAuthenticated, passportConfig.isAdmin, orderController.updateOrder);
+app.route("/produce")
+.get(produceController.getProduce)
+.post(passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.postProduce);
 app.route("/produce/:produceId")
  .get(produceController.getSingleProduce)
  .put(passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.updateProduce)
  .delete(passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.deleteProduce);
+app.post("/produce/add", passportConfig.isAuthenticated, passportConfig.isAdmin, produceController.addProduce);
 app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
 app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
