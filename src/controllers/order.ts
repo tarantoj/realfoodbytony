@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { check, validationResult } from "express-validator";
 import { Order, OrderDocument } from "../models/Order";
 import { UserDocument } from "../models/User";
+import { RequestError } from "request-promise/errors";
+import { Produce } from "../models/Produce";
 
 
 /**
@@ -18,6 +20,16 @@ export const getOrders = (req: Request, res: Response, next: NextFunction) => {
             });
         }
     });
+};
+
+export const getOrderForm = (req: RequestError, res: Response, next: NextFunction) => {
+    Produce.find({}, (err, produce) => {
+        if (err) next(err);
+        else {
+            res.render("orderForm", { produce });
+        }
+    });
+    res.render("orderForm");
 };
 
 export const getOrder = (req: Request, res: Response, next: NextFunction) => {
