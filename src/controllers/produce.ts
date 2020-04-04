@@ -1,29 +1,24 @@
 import { Request, Response, NextFunction } from "express";
 import { check, validationResult } from "express-validator";
 import { Produce, ProduceDocument } from "../models/Produce";
-import async from "async";
-import { UserDocument, User, userSchema } from "../models/User";
+import { UserDocument } from "../models/User";
 
 
 /**
  * GET /order
  * Order form page.
  */
-export const getProduce = (req: Request, res: Response) => {
-    Promise.all([
-            User.findOne(req.user),
-            Produce.find({})
-    ])
-    .then(([user, produce]) => {
-        res.render("produce", {
-            title: "Produce",
-            produce: produce,
-            isAdmin: user.isAdmin
-        });
-    })
-    .catch(err => {
-        req.flash("errors", err.array());
-        res.redirect("/");
+export const getProduce = (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as UserDocument;
+    Produce.find({}, (err, produce) => {
+        if (err) next(err);
+        else {
+            res.render("produce",
+            {
+                produce,
+                isAdmin: user.isAdmin
+            });
+        } 
     });
 };
 
@@ -39,7 +34,8 @@ export const postProduce = async (req: Request, res: Response, next: NextFunctio
         return res.redirect("/order");
     }
 
-    const produce = req.body.produce as [ProduceDocument];
+
+    const produce = req.body as [ProduceDocument];
 
     Produce.insertMany(produce, (err, results) => {
         if (err) next(err);
