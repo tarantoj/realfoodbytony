@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import {ProduceDocument, produceSchema} from "./Produce";
-import {UserDocument, userSchema} from "./User";
+import {ProduceDocument} from "./Produce";
+import {UserDocument} from "./User";
 
 export type OrderDocument = mongoose.Document & {
     user: UserDocument;
@@ -18,10 +18,10 @@ export type OrderDocument = mongoose.Document & {
 };
 
 const orderSchema = new mongoose.Schema({
-    user: userSchema,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     items: [
         {
-            produce: produceSchema,
+            produce: { type: mongoose.Schema.Types.ObjectId, ref: "Produce"},
             unit: String,
             quantity: Number,
             cost: Number
