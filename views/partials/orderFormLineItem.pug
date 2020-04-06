@@ -1,0 +1,6 @@
+.form-group.row.justify-content-md-center
+    label.col-sm-2.col-form-label.text-right.font-weight-bold(for='produceName') Name
+    .col-sm-8
+    select.form-control(name='name', id='name', autofocus=true)
+      each product in productList
+        option(value= product.name)

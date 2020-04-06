@@ -1,0 +1,71 @@
+extends layout
+
+block content
+  .page-header
+    h3 Build a box 
+    hr
+
+  form.form-horizontal(method='POST', id='orderForm')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-sm-2.col-form-label.text-right.font-weight-bold(for='collectionDate') Collection Date
+      .col-sm-2
+        select.form-control(name='collectionDate', id='collectionDate', autofocus=true)
+          each date in dates
+            option(value= date) #{date.getDate()}/#{date.getMonth()+1}
+    .form-group.row
+      .col
+        .input-group.mb-3
+          .input-group-prepend
+            span.input-group-text Item
+          select.form-control.line-item(name='items[0][produce]')
+            option test
+            option test2
+      .col
+        .input-group.mb-3
+          .input-group-prepend
+            span.input-group-text Unit
+          select.form-control(name='items[0][unit]')
+            option kg
+            option each
+            option bag
+      .col
+        .input-group.mb-3
+          .input-group-prepend
+            span.input-group-text Amount
+          input.form-control(type='number', name='items[' + index + '][quantity]', id='quantity', autofocus=true, min=0, step=0.01)
+      .col
+        button.btn.btn-outline-success()
+          i.fa.fa-plus(style='margin-right:0px;')
+
+    //- each product, index in produce
+    //-   .form-group.row
+    //-     label.col-sm-2.col-form-label.text-right.font-weight-bold(for='produceName') Name
+    //-     .col-sm-2
+    //-       select.form-control(name='items[' + index + '][produce]', id='id', autofocus=true)
+    //-         option(value= product.id)= product.name
+    //-     label.col-sm-1.col-form-label.text-right.font-weight-bold(for='quantity') Quantity
+    //-     .col-sm-2
+    //-       input.form-control(type='number', name='items[' + index + '][quantity]', id='quantity', autofocus=true, min=0, step=0.01)
+    //-     label.col-sm-1.col-form-label.text-right.font-weight-bold(for='unit') Unit
+    //-     .col-sm-2
+    //-       select.form-control(name='items[' + index + '][unit]', id='unit', autofocus=true)
+
+    //- .form-group.row.justify-content-md-center
+    //-   label.col-sm-2.col-form-label.text-right.font-weight-bold(for='email') Email
+    //-   .col-sm-8
+    //-     input.form-control(type='text', name='email', id='email')
+    //- .form-group.row.justify-content-md-center
+    //-   label.col-sm-2.col-form-label.text-right.font-weight-bold(for='message') Body
+    //-   .col-sm-8
+    //-     textarea.form-control(name='message', id='message', rows='7')
+    .form-group.row.justify-content-md-center
+      .offset-sm-7.col-sm-2
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-shopping-cart
+          | Order!
+
+block append scripts
+  script(src='/js/orderForm.js')
+  script(type='text/javascript').
+    var produce =!{JSON.stringify(produce)}
