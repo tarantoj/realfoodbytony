@@ -98,7 +98,7 @@ app.get("/signup", userController.getSignup);
 app.post("/signup", userController.postSignup);
 app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
-app.get("/order", orderController.getOrders);
+app.get("/order", orderController.getOrderForm);
 app.post("/order", passportConfig.isAuthenticated, orderController.postOrder);
 app.route("/order/:orderId")
  .get(passportConfig.isAuthenticated, orderController.getOrder)
