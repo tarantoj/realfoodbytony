@@ -10,13 +10,15 @@ import { UserDocument } from "../models/User";
  */
 export const getProduce = (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as UserDocument;
+    const isAdmin = user.isAdmin || false;
     Produce.find({}, (err, produce) => {
         if (err) next(err);
         else {
-            res.render("produce",
+            if (req.query.json) res.json(produce);
+            else res.render("produce",
             {
                 produce,
-                isAdmin: user.isAdmin
+                isAdmin
             });
         } 
     });
